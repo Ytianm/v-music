@@ -13,7 +13,7 @@
               <p>{{song.songname}}</p>
               <p>{{song.albumname}}</p>
             </li>
-            <li>{{timeFormat(song.interval)}}</li>
+            <li>{{song.interval|timeFormat}}</li>
           </ul>
         </li>            
       </ul>
@@ -31,10 +31,8 @@ import {timeFormat} from 'common/js/dom'
         default:[]
       },   
     },
-    mounted() {
-      console.log(timeFormat(600))
-    },
-    methods:{
+    filters:{
+      //时间转换，毫秒=>xx:xx
       timeFormat(time){
         return timeFormat(time)
       }

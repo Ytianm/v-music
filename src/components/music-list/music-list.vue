@@ -9,7 +9,7 @@
       ref="singerImg"
     >
       <div class="filter"></div>
-      <div class="play" ref="play">
+      <div class="play" ref="play" v-show="songList.length">
         <i class="fa fa-random" aria-hidden="true"></i>
         <span>随机播放</span>
       </div>
@@ -86,7 +86,7 @@ import Loading from 'base/loading/loading'
         let transform = prefixStyle('transform'); //浏览器前缀处理
 
         //上拉
-        if(-scrollY>=204){ 
+        if(-scrollY>=(this.singerImgHeight-40)){ 
           this.$refs.singerImg.style.paddingTop = 0;
           this.$refs.singerImg.style.height = 40 + 'px';
           this.$refs.singerImg.style.zIndex = 4;
@@ -100,7 +100,7 @@ import Loading from 'base/loading/loading'
 
         //下拉
         if(scrollY>0){
-          let scale = scrollY/500 + 1;
+          let scale = 1 + scrollY/this.singerImgHeight;//放大比例 = (图片原来的高度+scrollY)/图片原来的高度
           this.$refs.singerImg.style[transform] = 'scale('+scale+')';
         }else{
           this.$refs.singerImg.style[transform] = 'scale(1)';
