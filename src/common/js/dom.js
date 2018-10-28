@@ -1,5 +1,5 @@
 export function hasClass(el, className) {
-  let reg = new RegExp(`/(^|\\s)/${className}`);
+  let reg = new RegExp(`(^|\\s)${className}`);
   return reg.test(el.className);
 }
 
@@ -12,6 +12,18 @@ export function addClass(el, className) {
   el.className = newClass.join(' ');
 }
 
+export function removeClass(el,className){
+  if(!hasClass(el,className)){
+    return;
+  }
+  let newClass = el.className.split(' ');
+  for(let i =0;i<newClass.length;i++){
+    if(newClass[i] == className){
+      newClass.splice(i,1);
+    }
+  }
+  el.className = newClass.join(' ');
+}
 
 /*js中的样式代码根据浏览器自动添加对应前缀*/
 let eleStyle = document.createElement('div').style; //得到所有样式
@@ -49,6 +61,9 @@ export function timeFormat(time) {
   let minutes = Math.floor(time / 60);
   let seconds = time - 60 * minutes;
   
+  if (minutes.toString().length === 1) {
+    minutes = '0' + minutes;
+  }
   if (seconds.toString().length === 1) {
     seconds = '0' + seconds;
   }

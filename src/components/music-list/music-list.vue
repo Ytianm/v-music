@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" :class="{bottomUp:miniPlayer}">
     <div class="header">
       <i class="fa fa-angle-left back" @click="onBack"></i>
       <h1 class="singer-title">{{title}}</h1>
@@ -21,10 +21,10 @@
       @scroll="onScroll"
     >
       <div class="song-list-wrapper">
-        <SongList :songList="songList" @scroll="onScroll"></SongList>
+        <SongList :songList="songList" @scroll="onScroll" @selectSong="handleSelectSong"></SongList>
       </div>
       <div class="loading">
-        <Loading v-show="!songList"></Loading>
+        <Loading v-show="!songList.length>0"></Loading>
       </div>    
     </Scroll>
   </div>
@@ -32,6 +32,9 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import {mapActions} from 'vuex'
+import {mapMutations} from 'vuex'
+
 import {getSingerDetail} from 'api/singer'
 import {createSong} from 'common/js/song'
 import SongList from 'base/song-list/song-list'
@@ -60,7 +63,6 @@ import Loading from 'base/loading/loading'
         default:''
       }
     },
-
     created() {
       this.listenScroll = true; //scroll组件默认不监听滚动，需要手动设置成true
       this.probeType = 3;
@@ -70,8 +72,15 @@ import Loading from 'base/loading/loading'
       this.$refs.scroll.$el.style.top = `${this.singerImgHeight}px`;  //滚动列表的top值等于图片的高度
     },
     computed:{
+      ...mapGetters(['miniPlayer']),
+
       singerImgStyle(){
         return `background-image:url(${this.singerImg})`
+      }
+    },
+    watch:{
+      miniPlayer(){
+        this.$refs.scroll.refresh();
       }
     },
     methods:{
@@ -105,7 +114,21 @@ import Loading from 'base/loading/loading'
         }else{
           this.$refs.singerImg.style[transform] = 'scale(1)';
         }
+      },
+
+      //映射actions到该组件
+      ...mapActions(['selectSong']),
+      ...mapMutations({
+      }),
+
+      //点击歌曲后，操作state
+      handleSelectSong(index){
+        this.selectSong({
+          list:this.songList,
+          index
+        })
       }
+
     }
 
   }
@@ -123,6 +146,8 @@ import Loading from 'base/loading/loading'
     bottom:0
     background:#f5f5f5
     z-index:99
+    &.bottomUp
+      bottom:60px
     .header
       .back
         position:absolute

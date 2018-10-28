@@ -2,6 +2,7 @@ export class Song {
   constructor({
     songname,
     albumname,
+    albumimg,
     songorig,
     songid,
     songurl,
@@ -13,6 +14,7 @@ export class Song {
   }) {
     this.songname = songname;
     this.albumname = albumname;
+    this.albumimg = albumimg,
     this.songorig = songorig;
     this.songid = songid;
     this.songurl = songurl,
@@ -28,9 +30,10 @@ export function createSong(musicData) {
   return new Song({
     songname: musicData.songname,
     albumname: musicData.albumname,
+    albumimg:`https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`,
     songorig: musicData.songorig,
     songid: musicData.songid,
-    songurl: `http://ws.stream.qqmusic.qq.com/${musicData.songid}.m4a?fromtag=46`,
+    songurl: `http://dl.stream.qqmusic.qq.com/C100${musicData.songmid}.m4a`,
     interval:musicData.interval,
     singername: musicData['singer'][0].name,
     singerid: musicData['singer'][0].id,

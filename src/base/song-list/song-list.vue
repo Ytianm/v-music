@@ -6,21 +6,22 @@
         <li>时长</li>
       </ul>
       <ul>
-        <li v-for="(song,index) in songList" :key="song.songid">
-          <ul class="song-list-item">
-            <li>{{index+1}}</li>
-            <li>
-              <p>{{song.songname}}</p>
-              <p>{{song.albumname}}</p>
-            </li>
-            <li>{{song.interval|timeFormat}}</li>
-          </ul>
-        </li>            
+          <li v-for="(song,index) in songList" :key="song.songid">
+            <ul class="song-list-item" @click="selectSong(index)">
+              <li>{{index+1}}</li>
+              <li>
+                <p>{{song.songname}}</p>
+                <p>{{song.albumname}}</p>
+              </li>
+              <li>{{song.interval|timeFormat}}</li>
+            </ul>
+          </li>  
       </ul>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 import {timeFormat} from 'common/js/dom'
 
   export default {
@@ -31,10 +32,21 @@ import {timeFormat} from 'common/js/dom'
         default:[]
       },   
     },
+    data(){
+      return {
+        allLoaded:false
+      }
+    },
     filters:{
       //时间转换，毫秒=>xx:xx
       timeFormat(time){
         return timeFormat(time)
+      }
+    },
+    methods:{
+      //点击歌曲播放
+      selectSong(index){
+        this.$emit('selectSong',index); //基础组件不做逻辑处理，暴露给父组件
       }
     }
   }

@@ -10,6 +10,8 @@ import 'common/stylus/index.styl'
 import fastclick from 'fastclick'
 import VueLazyload from 'vue-lazyload'
 
+import 'common/stylus/iconfont/iconfont.css'
+
 Vue.config.productionTip = false
 
 fastclick.attach(document.body)
